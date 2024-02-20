@@ -7,11 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { symptoms } from "../lib/symptomData";
+// import { symptoms } from "../lib/symptomData";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RNPickerSelect from "react-native-picker-select";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [symptoms, setSymptoms] = useState([]);
   const [symptomInput, setSymptomInput] = useState("");
   const [breed, setBreed] = useState("");
@@ -68,7 +68,12 @@ const HomeScreen = () => {
     }
   };
 
-  // console.log(symptoms + "$$" + breed);
+  const handleAgeChange = (text) => {
+    // Regex to remove non-numeric characters
+    const numericValue = text.replace(/[^0-9]/g, "");
+    setAge(numericValue);
+  };
+  console.log("Symptoms array" + symptoms + "The breed Selected: " + breed);
 
   return (
     <SafeAreaView>
@@ -118,7 +123,8 @@ const HomeScreen = () => {
             style={styles.input}
             placeholder="Age"
             value={age}
-            onChangeText={setAge}
+            keyboardType="numeric"
+            onChangeText={handleAgeChange}
           />
         </View>
         <ScrollView style={styles.treatmentOptionsContainer}>
@@ -132,7 +138,10 @@ const HomeScreen = () => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Results")}
+        >
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
